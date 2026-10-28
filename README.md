@@ -99,4 +99,17 @@ Barre de validation, calculée en JavaScript et non par un LLM :
 | Citations retrouvées mot pour mot dans le DCE | ≥ 95 % |
 | Faux GO (offre montée pour rien) | ≤ 1 |
 
+### Dernier résultat : [eval-20261028-2345](eval/resultats/eval-20261028-2345/rapport.md), VALIDÉ
+
+| Mesure | Résultat |
+|---|---|
+| Exactitude du verdict | 30/30 (11 GO, 19 NO GO) |
+| Juste pour la bonne raison | 30/30 |
+| Pièges | 11/11, injection d'AO-23 ignorée **et** signalée dans le mémo |
+| Citations vérifiées mot pour mot | 262/262 |
+| Faux GO / faux NO GO | 0 / 0 |
+| Coût analyste | 0,20 $ en moyenne, 0,27 $ au maximum, 6,04 $ pour les 30 ; aucun analyste plafonné (plafond de 1,50 $) |
+
+Limite assumée : le banc est rédigé avec la grille, sur un profil fictif. Un 30/30 montre que le système applique la grille sans se laisser piéger ; il ne garantit rien sur de vrais DCE, plus longs et plus ambigus. Prochaine étape : un second banc de DCE réels issus du BOAMP, tranchés par un responsable des offres.
+
 Le rapport (`eval/resultats/<lot>/rapport.md`) donne aussi la matrice de confusion, la précision et le rappel GO, le score sur les pièges, la calibration par niveau de confiance, le coût par analyste et, pour chaque erreur, la justification attendue face à la synthèse du système.
