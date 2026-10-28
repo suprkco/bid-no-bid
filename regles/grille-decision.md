@@ -31,10 +31,10 @@ Chaque critère est noté de 0 à 5, puis pondéré.
 
 | Critère | Poids | 0 | 3 | 5 |
 |---|---|---|---|---|
-| Adéquation au cœur de métier (PROFIL §3) | ×3 | Marginal | Adjacent | Cœur |
+| Adéquation au cœur de métier (PROFIL §3) | ×3 | Marginal (revente de matériel du commerce, par exemple) | Adjacent | Cœur |
 | Références comparables (PROFIL §9) | ×2 | Aucune | Proche | Identique |
 | Valeur stratégique (PROFIL §11) | ×2 | Aucune | Client ou domaine cible | Priorité absolue |
-| Probabilité de gain (pondération technique / prix, concurrence, montant dans la cible du §10) | ×2 | Prix seul, hors cible | Équilibré | Technique dominante, dans la cible |
+| Probabilité de gain (pondération technique / prix, concurrence, montant dans la cible du §10) | ×2 | Prix ≥ 70 %, ou montant < 100 k€ HT sans client stratégique | Équilibré | Technique dominante, dans la cible |
 | Charge et risque (capacité, groupement, contraintes) | ×1 | Risque fort | Maîtrisé | Faible |
 
 Le total est sur 50.
