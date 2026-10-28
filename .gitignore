@@ -1,0 +1,6 @@
+sortie/*
+!sortie/.gitkeep
+dossiers/*
+!dossiers/.gitkeep
+.mcp.json
+.claude/settings.local.json
