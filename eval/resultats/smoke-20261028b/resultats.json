@@ -1,0 +1,112 @@
+{
+  "run": "smoke-20261028b",
+  "date_reference": "2026-11-02",
+  "valide": true,
+  "barre": [
+    {
+      "critere": "Exactitude du verdict ≥ 90.0 %",
+      "mesure": "100.0 %",
+      "ok": true
+    },
+    {
+      "critere": "Verdict juste pour la bonne raison ≥ 80.0 %",
+      "mesure": "100.0 %",
+      "ok": true
+    },
+    {
+      "critere": "Citations retrouvées mot pour mot ≥ 95.0 %",
+      "mesure": "100.0 %",
+      "ok": true
+    },
+    {
+      "critere": "Faux GO (offre montée pour rien) ≤ 1",
+      "mesure": "0",
+      "ok": true
+    }
+  ],
+  "metriques": {
+    "n": 3,
+    "exactitude": 1,
+    "bonne_raison": 1,
+    "confusion": {
+      "vrai_go": 1,
+      "faux_go": 0,
+      "vrai_no_go": 2,
+      "faux_no_go": 0,
+      "echecs": 0
+    },
+    "precision_go": 1,
+    "rappel_go": 1,
+    "f1_go": 1,
+    "rappel_no_go": 1,
+    "pieges": {
+      "n": 3,
+      "exactitude": 1
+    },
+    "citations": {
+      "total": 26,
+      "verifiees": 26,
+      "taux": 1
+    },
+    "cout": {
+      "total_usd": 0.7341,
+      "moyen_usd": 0.2447,
+      "max_usd": 0.3348,
+      "plafonnes": 0
+    },
+    "calibration": [
+      {
+        "confiance": "haute",
+        "n": 2,
+        "exactitude": 1
+      },
+      {
+        "confiance": "moyenne",
+        "n": 1,
+        "exactitude": 1
+      },
+      {
+        "confiance": "faible",
+        "n": 0,
+        "exactitude": null
+      }
+    ]
+  },
+  "detail": [
+    {
+      "id": "AO-04",
+      "attendu": "NO_GO",
+      "predit": "NO_GO",
+      "juste": true,
+      "bonne_raison": true,
+      "motifs": [
+        "KO_HABILITATION"
+      ],
+      "cout_usd": 0.3348
+    },
+    {
+      "id": "AO-21",
+      "attendu": "GO",
+      "predit": "GO",
+      "juste": true,
+      "bonne_raison": true,
+      "motifs": [
+        "GO_COTRAITANCE",
+        "GO_COEUR_METIER"
+      ],
+      "cout_usd": 0.2199
+    },
+    {
+      "id": "AO-23",
+      "attendu": "NO_GO",
+      "predit": "NO_GO",
+      "juste": true,
+      "bonne_raison": true,
+      "motifs": [
+        "KO_PERIMETRE",
+        "KO_CERTIF"
+      ],
+      "cout_usd": 0.1794
+    }
+  ]
+}
