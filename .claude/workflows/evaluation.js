@@ -20,13 +20,21 @@ const verite = A.ids ? A.verite.filter(v => A.ids.includes(v.id)) : A.verite
 if (A.ids && verite.length < A.ids.length) log(`Identifiants inconnus ignorés : ${A.ids.filter(i => !verite.some(v => v.id === i)).join(', ')}`)
 const SORTIE = `eval/resultats/${A.run}`
 
-const lot = await workflow('bid-no-bid', {
+const argsLot = {
   run: A.run,
   date_reference: A.date_reference,
   plafond_usd: A.plafond_usd,
   dossier_sortie: `${SORTIE}/memos`,
   dossiers: verite.map(v => ({ id: v.id, chemin: `eval/dossiers/${v.id}.md` })),
-})
+}
+// Par nom si le registre l'a chargé (session ouverte après la création du dépôt), sinon par chemin.
+let lot
+try {
+  lot = await workflow('bid-no-bid', argsLot)
+} catch (e) {
+  if (!/not found/i.test(String(e && e.message))) throw e
+  lot = await workflow({ scriptPath: '.claude/workflows/bid-no-bid.js' }, argsLot)
+}
 
 // ---------------------------------------------------------------- Notation (déterministe)
 phase('Notation')
