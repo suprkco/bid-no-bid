@@ -217,9 +217,22 @@ function rendreMemo(m, verif) {
   ].join('\n')
 }
 
+// Le type analyste-ao est chargé au démarrage de la session. S'il est absent (dépôt créé en cours de
+// session), on bascule sur l'agent générique qui lit la définition de l'analyste. Le hook garde-analyste
+// le reconnaît à son étiquette [BNB …] et lui applique le même plafond et les mêmes restrictions.
+function analyser(d) {
+  const opts = { schema: MEMO, phase: 'Analyse', label: `analyse:${d.id}` }
+  return agent(promptAnalyse(d), { ...opts, agentType: 'analyste-ao' }).catch(e => {
+    if (!/agent type 'analyste-ao' not found/i.test(String(e && e.message))) throw e
+    log(`${d.id} : type analyste-ao non chargé dans cette session, repli sur l'agent générique`)
+    return agent(promptAnalyse(d) + '\n\nCommence par lire `.claude/agents/analyste-ao.md` (ignore l’en-tête YAML) : ce sont tes consignes.',
+      { ...opts, effort: 'high' })
+  })
+}
+
 const resultats = await pipeline(
   dossiers,
-  d => agent(promptAnalyse(d), { agentType: 'analyste-ao', schema: MEMO, phase: 'Analyse', label: `analyse:${d.id}` }),
+  d => analyser(d),
   (memo, d) => {
     if (!memo) return { d, memo: null, verif: null }
     return agent(promptVerif(memo, d), { schema: VERIF, phase: 'Vérification', label: `citations:${d.id}`, effort: 'low' })

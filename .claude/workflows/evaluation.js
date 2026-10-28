@@ -32,7 +32,7 @@ let lot
 try {
   lot = await workflow('bid-no-bid', argsLot)
 } catch (e) {
-  if (!/not found/i.test(String(e && e.message))) throw e
+  if (!/no workflow with that name|not found/i.test(String(e && e.message))) throw e
   lot = await workflow({ scriptPath: '.claude/workflows/bid-no-bid.js' }, argsLot)
 }
 

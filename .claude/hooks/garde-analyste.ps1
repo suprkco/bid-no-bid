@@ -7,11 +7,18 @@ $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [Text.Encoding]::UTF8
 $entree = [Console]::In.ReadToEnd() | ConvertFrom-Json
 
-if ($entree.agent_type -ne 'analyste-ao') { exit 0 }
+if (-not $entree.agent_id) { exit 0 }
 if ($entree.tool_name -eq 'StructuredOutput') { exit 0 }
 
 . (Join-Path $PSScriptRoot 'cout-commun.ps1')
 $racine = if ($env:CLAUDE_PROJECT_DIR) { $env:CLAUDE_PROJECT_DIR } else { [string]$entree.cwd }
+
+# Un analyste se reconnaît à son type, ou à l'étiquette [BNB …] posée par l'orchestrateur
+# (repli sur l'agent générique quand le type analyste-ao n'est pas chargé dans la session).
+$transcript = Find-TranscriptAgent $entree (Join-Path $racine 'sortie/couts/.chemins')
+$etiquette = if ($transcript -and (Test-Path $transcript)) { Get-EtiquetteBnb $transcript } else { $null }
+$estAnalyste = $entree.agent_type -eq 'analyste-ao' -or ($etiquette -and $etiquette.id -ne 'inconnu')
+if (-not $estAnalyste) { exit 0 }
 
 function Refuser([string]$raison) {
   @{ hookSpecificOutput = @{ hookEventName = 'PreToolUse'; permissionDecision = 'deny'; permissionDecisionReason = $raison } } |
@@ -20,7 +27,11 @@ function Refuser([string]$raison) {
 }
 
 # --- 1. Moindre privilège --------------------------------------------------------------
-$racinesAutorisees = 'profil', 'regles', 'dossiers', 'eval/dossiers' |
+$outilsAutorises = 'Read', 'Grep', 'Glob', 'ToolSearch'
+if ($entree.tool_name -notin $outilsAutorises -and $entree.tool_name -notmatch '^mcp__(boamp|ted)__') {
+  Refuser "Outil $($entree.tool_name) interdit à l'analyste : lecture seule (Read, Grep, Glob) et MCP boamp/ted."
+}
+$racinesAutorisees = 'profil', 'regles', 'dossiers', 'eval/dossiers', '.claude/agents' |
   ForEach-Object { [IO.Path]::GetFullPath((Join-Path $racine $_)).TrimEnd('\') + '\' }
 
 $chemin = switch ($entree.tool_name) {
@@ -42,10 +53,7 @@ if ($entree.tool_name -in 'Read', 'Grep', 'Glob') {
 }
 
 # --- 2. Plafond de coût -----------------------------------------------------------------
-$transcript = Find-TranscriptAgent $entree (Join-Path $racine 'sortie/couts/.chemins')
-if (-not $transcript -or -not (Test-Path $transcript)) { exit 0 }   # transcript pas encore écrit : maxTurns reste le garde-fou
-
-$etiquette = Get-EtiquetteBnb $transcript
+if (-not $etiquette) { exit 0 }   # transcript pas encore écrit : maxTurns reste le garde-fou
 $plafond = if ($etiquette.plafond) { $etiquette.plafond } elseif ($env:BNB_PLAFOND_USD) { [double]$env:BNB_PLAFOND_USD } else { 1.50 }
 $cout = Measure-CoutTranscript $transcript
 $depasse = $cout -ge $plafond

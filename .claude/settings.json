@@ -34,7 +34,7 @@
     ],
     "SubagentStop": [
       {
-        "matcher": "analyste-ao",
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
