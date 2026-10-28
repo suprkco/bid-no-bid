@@ -19,6 +19,9 @@ function Decider([string]$decision, [string]$raison) {
 }
 
 if ($entree.agent_id) { Decider 'deny' "Un sous-agent ne peut pas envoyer de mémo : l'envoi passe par scripts/valider.ps1." }
+# « defer » n'existe qu'en mode `claude -p`. En session interactive, il casse l'appel d'outil :
+# hors du flux de validation (variable posée par scripts/valider.ps1), on refuse explicitement.
+if ($env:BNB_FLUX_VALIDATION -ne '1') { Decider 'deny' "L'envoi d'un mémo passe uniquement par : powershell -File scripts/valider.ps1 -Run <lot>." }
 
 $racine = if ($env:CLAUDE_PROJECT_DIR) { $env:CLAUDE_PROJECT_DIR } else { [string]$entree.cwd }
 $fichier = Join-Path $racine "sortie/approbations/$($entree.tool_use_id).json"

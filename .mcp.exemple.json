@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "boamp": {
+      "command": "REMPLACER_par_la_commande_de_votre_serveur_MCP_BOAMP",
+      "args": []
+    },
+    "ted": {
+      "command": "REMPLACER_par_la_commande_de_votre_serveur_MCP_TED",
+      "args": []
+    }
+  }
+}
