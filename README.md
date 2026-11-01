@@ -1,5 +1,7 @@
 # Bid/No-Bid défense
 
+[![M8ven Score](https://m8ven.ai/badge/mcp/suprkco-bid-no-bid-1b3vbv?v=d4990863ffd5461f26be201fceb6c59b)](https://m8ven.ai/mcp/suprkco-bid-no-bid-1b3vbv?s=readme)
+
 Une équipe d'agents qui **tranche** GO ou NO GO sur des appels d'offres de défense pour une PME, prouve chaque décision par des citations vérifiées mot pour mot, et **mesure** sur 30 cas tranchés à la main qu'elle tranche bien.
 
 L'accès aux données n'est pas recodé : des serveurs MCP existent déjà pour BOAMP et TED. Ce dépôt construit la partie qui raisonne.
